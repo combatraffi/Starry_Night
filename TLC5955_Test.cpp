@@ -12,27 +12,31 @@ MOSI = SIN, SS = LAT, SCK = CLK
 */
 
 
-data=[4096]
+int bright_command={4096};
 
 void setup(){
     Serial.begin(115200);
     SPI.begin();
     SPI.setClockDivider(SPI_CLOCK_DIV8);//divide the clock by 8
-
-
 }
 
 void loop(){
 
-
-
-
-
+send_data(bright_command);
+delay(5000);
+bright_command[0] = 0;
+send_data(bright_command);
+delay(5000);
+bright_command[0] = 4096;
 }
 
 void send_data(data){
     //This funciton sends data via SPI to the TLC5955 Set
+    SPI.beginTransaction(SPISettings(14000000, MSBFIRST, SPI_MODE0));
     digitalWrite(SS,LOW);
     SPI.transfer(data);
     digitalWrite(SS, HIGH);
+    SPI.endTransaction();
 }
+
+
