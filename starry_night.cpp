@@ -1,4 +1,14 @@
 
+//THINGS TO DO IN THIS SCRIPT
+    //Create Event Controller
+    //Create SPI Comms Function that can send to either chipset AND send variable commands
+    //
+
+
+
+
+
+
 //This is a script to twinkle approximately 100 stars (0402 LED's)
 struct Twinkle_star {
     //This class carries status information for the LED's 
@@ -13,11 +23,17 @@ struct Twinkle_star {
 
 Twinkle_star star[100];
 int current_time;
+unsigned int comspeed = 3000000;    //Sets the SPI communication speed
+int output_enable = 6;  //output enable pin LOW ENABLE, triggers both chips
+
+
+
+
 
 
 void setup()
 {
-
+pinMode(output_enable, INPUT);
 
 Serial.begin(115200);
 
@@ -74,3 +90,15 @@ int e_delay = 0
         star[i].event_time = millis()+e_delay;
     }
 }
+
+void send_data(int chipsel)
+//This function sends instructions to both 74HC595's and the PCA9745B over SPI
+{
+  digitalWrite(chipsel,LOW);
+  SPI.beginTransaction(SPISettings(comspeed, MSBFIRST, SPI_MODE0));  //3 Mhz should be more than fast enough for this application.
+    SPI.transfer16(lighting_command);
+  digitalWrite(chipsel, HIGH);
+  SPI.endTransaction();
+}
+
+
