@@ -31,3 +31,6 @@ hopefully all this work can be done when we are not addressing lED's should prob
 
 create a function which creates a 16 int array which contains the next instruction set.
 the function needs to take the address pull the correct 16 brightness levels from the stars array and combine them into a 16 in long array which gets pulled in and sent to the controller
+
+
+PCA9745_PWM_ADDRESS={0b00010001,0b00010011,0b00010101,0b00010111,0b00011001,0b00011011,0b00011101,0b00011111,0b00100001,0b00100011,0b00100101,0b00100111,0b00101001,0b00101011,0b00101101,0b00101111}

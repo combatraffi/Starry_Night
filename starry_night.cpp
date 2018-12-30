@@ -21,9 +21,9 @@ struct Twinkle_star {
     uint16_t dimming_active=0;
 }
 
-
+byte PCA9745_PWM_ADDRESS={0b00010001,0b00010011,0b00010101,0b00010111,0b00011001,0b00011011,0b00011101,0b00011111,0b00100001,0b00100011,0b00100101,0b00100111,0b00101001,0b00101011,0b00101101,0b00101111}  //These are the PCA PWM Write addresses
 Twinkle_star star[100]; //Stars array
-dimming_set[16];    //instruction set for dimmer chip
+uint16_t dimming_set[16];    //instruction set for dimmer chip
 int current_time;
 unsigned int comspeed = 3000000;    //Sets the SPI communication speed
 int output_enable = 6;  //output enable pin LOW ENABLE, triggers both chips
@@ -104,20 +104,28 @@ void send_data(int chipsel)
 }
 
 void construct_dim_command(){
+    //This function updates the array which holds 16 dimming commands
+    for(int i=0;i<8;i++){
+
+        dimming_set[i]=build_dimset[i];
 
 
 
 
 
-    
 }
 
-uint16_t build_dimset (){
 
 
 
+}
 
-
-
+uint16_t build_dimset (int which_led){
+    // This function  combines the correct LED address wtih the dimminc command for the PCA controller
+    uint16_t command = 0;
+    command = command && PCA9745_PWM_ADDRESS[which_led];
+    command <<7;
+    command = command && ADDSOMETHINGHEREWHENIFIGUREOUTWHATTHISLOOKSLIKE;
+    return (command);
 }
 
