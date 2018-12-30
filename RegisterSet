@@ -1,0 +1,33 @@
+
+//Register Address Set for PCA9745B
+
+LED_0_PWM = 0b0001000;
+LED_1_PWM = 0b0001001;
+LED_2_PWM = 0b0001010;
+LED_3_PWM = 0b0001011;
+LED_4_PWM = 0b0001100;
+LED_5_PWM = 0b0001101;
+LED_6_PWM = 0b0001110;
+LED_7_PWM = 0b0001111;
+LED_8_PWM = 0b0010000;
+LED_9_PWM = 0b0010001;
+LED_10_PWM = 0b0010010;
+LED_11_PWM = 0b0010011;
+LED_12_PWM = 0b0010100;
+LED_13_PWM = 0b0010101;
+LED_14_PWM = 0b0010110;
+LED_15_PWM = 0b0010111;
+
+//Register Address Set for PCA9745B
+
+ok so the next question is how to I cram the address, the read/write bit, and the brightness byte together into one 16 bit number?
+
+TRY THIS
+    Use 16 bit unsigned int
+    do bitwise AND with Address
+    bitshift over 1
+    bitwise and read/write bit
+    bitshift over 7
+    bitwise and brighness byte
+
+hopefully all this work can be done when we are not addressing lED's should probably set a desired refresh rate to keep it from being at a billion hz (god willing)
