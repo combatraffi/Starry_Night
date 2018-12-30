@@ -1,22 +1,22 @@
 
 //Register Address Set for PCA9745B
-
-LED_0_PWM = 0b0001000;
-LED_1_PWM = 0b0001001;
-LED_2_PWM = 0b0001010;
-LED_3_PWM = 0b0001011;
-LED_4_PWM = 0b0001100;
-LED_5_PWM = 0b0001101;
-LED_6_PWM = 0b0001110;
-LED_7_PWM = 0b0001111;
-LED_8_PWM = 0b0010000;
-LED_9_PWM = 0b0010001;
-LED_10_PWM = 0b0010010;
-LED_11_PWM = 0b0010011;
-LED_12_PWM = 0b0010100;
-LED_13_PWM = 0b0010101;
-LED_14_PWM = 0b0010110;
-LED_15_PWM = 0b0010111;
+// ONLY NEED WRITE REGISTERS.  I DONT HAVE MISO LINE
+LED_0_PWM_WRITE = 0b00010001;
+LED_1_PWM_WRITE = 0b00010011;
+LED_2_PWM_WRITE = 0b00010101;
+LED_3_PWM_WRITE = 0b00010111;
+LED_4_PWM_WRITE = 0b00011001;
+LED_5_PWM_WRITE = 0b00011011;
+LED_6_PWM_WRITE = 0b00011101;
+LED_7_PWM_WRITE = 0b00011111;
+LED_8_PWM_WRITE = 0b00100001;
+LED_9_PWM_WRITE = 0b00100011;
+LED_10_PWM_WRITE = 0b00100101;
+LED_11_PWM_WRITE = 0b00100111;
+LED_12_PWM_WRITE = 0b00101001;
+LED_13_PWM_WRITE = 0b00101011;
+LED_14_PWM_WRITE = 0b00101101;
+LED_15_PWM_WRITE = 0b00101111;
 
 //Register Address Set for PCA9745B
 
@@ -24,10 +24,10 @@ ok so the next question is how to I cram the address, the read/write bit, and th
 
 TRY THIS
     Use 16 bit unsigned int
-    do bitwise AND with Address
-    bitshift over 1
-    bitwise and read/write bit
     bitshift over 7
     bitwise and brighness byte
 
 hopefully all this work can be done when we are not addressing lED's should probably set a desired refresh rate to keep it from being at a billion hz (god willing)
+
+create a function which creates a 16 int array which contains the next instruction set.
+the function needs to take the address pull the correct 16 brightness levels from the stars array and combine them into a 16 in long array which gets pulled in and sent to the controller

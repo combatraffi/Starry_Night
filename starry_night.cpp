@@ -5,7 +5,8 @@
     //
 
 
-
+//activate low side with 0-15 brightness control pulled form star array
+//
 
 
 
@@ -21,7 +22,8 @@ struct Twinkle_star {
 }
 
 
-Twinkle_star star[100];
+Twinkle_star star[100]; //Stars array
+dimming_set[16];    //instruction set for dimmer chip
 int current_time;
 unsigned int comspeed = 3000000;    //Sets the SPI communication speed
 int output_enable = 6;  //output enable pin LOW ENABLE, triggers both chips
@@ -101,4 +103,21 @@ void send_data(int chipsel)
   SPI.endTransaction();
 }
 
+void construct_dim_command(){
+
+
+
+
+
+    
+}
+
+uint16_t build_dimset (){
+
+
+
+
+
+
+}
 
