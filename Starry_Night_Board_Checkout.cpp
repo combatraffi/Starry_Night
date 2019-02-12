@@ -3,7 +3,7 @@
 
 
 byte lighting_command;
-
+int pwm_register_set[]={B0001000, B0001001, B0001010,}
 void setup()
 {
   Serial.begin(115200);
@@ -44,4 +44,23 @@ void send_data(uint_16t cmd1, uint_16t cmd2) {
   SPI.transfer(cmd2);
   digitalWrite(ss2, HIGH);
   SPI.endTransaction();
+}
+
+int build_command_set(int lednum, int readwrite, int command_val){
+    //this function takes command registers and combines them with commands to form an instruction set
+    int regset=0;
+    int typebit;
+    if (readwrite ==1){
+        typebit = B0000000100000000;
+    }  
+    else {
+
+        typebit = 0;
+    }  
+    regset = pwm_register_set[lednum];
+    regset << 1;
+    regset = regset | typebit;
+    regset << 6;
+    regset = regset | command_val;
+    return(regset)
 }
