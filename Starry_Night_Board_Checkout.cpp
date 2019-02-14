@@ -3,7 +3,7 @@
 
 
 byte lighting_command;
-int pwm_register_set[]={B0001000, B0001001, B0001010,}
+int pwm_register_set[]={B0001000, B0001001, B0001010,}  //I would like this to go into a library
 
 void setup()
 {
@@ -16,27 +16,26 @@ void setup()
 
 void loop()
 {
-    //command 16 LEDs on on each set.
-    high_side_command = B0000000000000001;  //recall that these are 16 bit signals
-    low_side_command = B1111111111111111
-    send_data();
-    delay(100);
-
-for (int i, i<16, i++){
-  high_side_command << 1;
-  send_data(0, high_side_command);
+  //command 16 LEDs on on each set.
+  high_side_command = B0000000000000001;  //recall that these are 16 bit signalss
   delay(100);
-  for(int j; j<=16, j++){
-      send_data(1, build_command_set(j, 1, 255));
 
+  for (int i, i<16, i++)
+  {
+    high_side_command << 1;
+    send_data(0, high_side_command);
+    delay(100);
+    for(int j; j<=16, j++)
+    {
+        send_data(1, build_command_set(j, 1, 255));
+    }
   }
-
-}
-
 }
 
 void send_data(int target, int cmd) {
     //This sends both high side and low side data
+    //target value of 0 sends to high side, 1 to low side.
+      //operationally that means changing the lat lines used
   Serial.println("Entered Send Data : "); //Send Serial Flag
   Serial.print("Command: ");
   Serial.print(cmd);
@@ -57,6 +56,7 @@ void send_data(int target, int cmd) {
   }
   SPI.endTransaction();
 }
+
 
 int build_command_set(int lednum, int readwrite, int command_val){
     //this function takes command registers and combines them with commands to form an instruction set
