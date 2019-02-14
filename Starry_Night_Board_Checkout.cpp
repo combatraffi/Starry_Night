@@ -61,19 +61,20 @@ void send_data(int target, int cmd) {
 int build_command_set(int lednum, int readwrite, int command_val){
     //this function takes command registers and combines them with commands to form an instruction set
     // command set for PCA9745B
-    int regset=0;
+    int regset=0; //register construct
     int typebit;
-    if (readwrite ==1){
-        typebit = B0000000100000000;
+    if (readwrite ==1)
+    {
+      typebit = B0000000100000000;
     }
-    else {
-
-        typebit = 0;
+    else
+    {
+      typebit = 0;
     }
-    regset = pwm_register_set[lednum];
-    regset << 1;
-    regset = regset | typebit;
-    regset << 6;
-    regset = regset | command_val;
+    regset = pwm_register_set[lednum];  //pulls the correct register from the LUT
+    regset << 1;  //shift over one to add in the read/write bit
+    regset = regset | typebit;  //add the read/write bit
+    regset << 6;  //shift over to add value
+    regset = regset | command_val;  //add in value (0-255)
     return(regset)
 }
