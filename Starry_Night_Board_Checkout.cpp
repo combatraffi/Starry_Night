@@ -60,6 +60,7 @@ void send_data(int target, int cmd) {
 
 int build_command_set(int lednum, int readwrite, int command_val){
     //this function takes command registers and combines them with commands to form an instruction set
+    // command set for PCA9745B
     int regset=0;
     int typebit;
     if (readwrite ==1){
