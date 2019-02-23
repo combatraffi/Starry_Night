@@ -3,7 +3,7 @@
 
 
 byte lighting_command;
-int pwm_register_set[]={B0001000, B0001001, B0001010,}  //I would like this to go into a library
+unsigned int pwm_register_set[]={B0001000, B0001001, B0001010,B0001011,B0001100,B0001101,B0001110,B0001111, B0010000, B0010001,B0010010,B0010011,B0010100,B0010101,B0010110,BB0010111}  //I would like this to go into a library
 
 void setup()
 {
@@ -32,7 +32,7 @@ void loop()
   }
 }
 
-void send_data(int target, int cmd) {
+void send_data(unsigned int target, unsigned int cmd) {
     //This sends both high side and low side data
     //target value of 0 sends to high side, 1 to low side.
       //operationally that means changing the lat lines used
@@ -58,11 +58,11 @@ void send_data(int target, int cmd) {
 }
 
 
-int build_command_set(int lednum, int readwrite, int command_val){
+int build_command_set(unsigned int lednum, unsigned int readwrite, unsigned int command_val){
     //this function takes command registers and combines them with commands to form an instruction set
     // command set for PCA9745B
-    int regset=0; //register construct
-    int typebit;
+    unsigned int regset=0; //register construct
+    unsigned int typebit;
     if (readwrite ==1)
     {
       typebit = B0000000100000000;
