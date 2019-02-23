@@ -61,6 +61,8 @@ void send_data(unsigned int target, unsigned int cmd) {
 int build_command_set(unsigned int lednum, unsigned int readwrite, unsigned int command_val){
     //this function takes command registers and combines them with commands to form an instruction set
     // command set for PCA9745B
+    //readwrite = 1 = digitalWrite
+    
     unsigned int regset=0; //register construct
     unsigned int typebit;
     if (readwrite ==1)
