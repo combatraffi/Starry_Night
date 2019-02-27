@@ -9,28 +9,7 @@ unsigned int high_side_command = 256;
 unsigned int cmd_set;
 
 
-unsigned int build_command_set(unsigned int lednum, unsigned int readwrite, unsigned int command_val) {
-  //this function takes command registers and combines them with commands to form an instruction set
-  // command set for PCA9745B
-  //readwrite = 1 = digitalWrite
 
-  unsigned int regset = 0; //register construct
-  unsigned int typebit;
-  if (readwrite == 1)
-  {
-    typebit = 128;
-  }
-  else
-  {
-    typebit = 0;
-  }
-  regset = pwm_register_set[lednum];  //pulls the correct register from the LUT
-  regset << 1;  //shift over one to add in the read/write bit
-  regset = regset | typebit;  //add the read/write bit
-  regset << 6;  //shift over to add value
-  regset = regset | command_val;  //add in value (0-255)
-  return (regset);
-}
 
 
 void setup()
@@ -59,6 +38,29 @@ void loop()
       send_data(1, build_command_set(j, 1, 255));
     }
   }
+}
+
+unsigned int build_command_set(unsigned int lednum, unsigned int readwrite, unsigned int command_val) {
+  //this function takes command registers and combines them with commands to form an instruction set
+  // command set for PCA9745B
+  //readwrite = 1 = digitalWrite
+
+  unsigned int regset = 0; //register construct
+  unsigned int typebit;
+  if (readwrite == 1)
+  {
+    typebit = 128;
+  }
+  else
+  {
+    typebit = 0;
+  }
+  regset = pwm_register_set[lednum];  //pulls the correct register from the LUT
+  regset << 1;  //shift over one to add in the read/write bit
+  regset = regset | typebit;  //add the read/write bit
+  regset << 6;  //shift over to add value
+  regset = regset | command_val;  //add in value (0-255)
+  return (regset);
 }
 
 void send_data(unsigned int target, unsigned int cmd)
