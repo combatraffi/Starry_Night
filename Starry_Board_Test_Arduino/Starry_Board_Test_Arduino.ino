@@ -55,8 +55,8 @@ void loop()
     delay(100);
     for (int j; j <= 16; j++)
     {
-      cmd_set = build_command_set(j, 1, 255);
-      send_data(1, cmd_set);
+      //cmd_set = ;
+      send_data(1, build_command_set(j, 1, 255));
     }
   }
 }
