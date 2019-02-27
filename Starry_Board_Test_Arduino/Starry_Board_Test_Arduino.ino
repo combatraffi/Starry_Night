@@ -1,10 +1,11 @@
 //Starry_Night_Board_Checkout.cpp
-#include<SPI.h>
+//#include<SPI.h>
 
 
 byte lighting_command;
-unsigned int pwm_register_set[] = {B0001000, B0001001, B0001010, B0001011, B0001100, B0001101, B0001110, B0001111, B0010000, B0010001, B0010010, B0010011, B0010100, B0010101, B0010110, B0010111} ; //I would like this to go into a library
-unsigned int ss1, ss2;
+unsigned int pwm_register_set[] = {4096, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608} ; //I would like this to go into a library
+unsigned int ss1 = 8;
+unsigned int ss2 = 9;
 unsigned int high_side_command = 256;
 unsigned int cmd_set;
 
@@ -14,32 +15,35 @@ unsigned int cmd_set;
 
 void setup()
 {
-  Serial.begin(115200);
-  SPI.begin();
+  Serial1.begin(115200);
+  Serial1.println("Ping");
+  //SPI.begin();
   // SPI.setClockDivider(SPI_CLOCK_DIV8);//divide the clock by 8
   pinMode(ss1, OUTPUT);
   pinMode(ss2, OUTPUT);
+  
 }
 
 void loop()
 {
   //command 16 LEDs on on each set.
 
-  delay(100);
-
+  high_side_command = 255;
+  Serial1.println("Pong");
   for (int i; i < 16; i++)
   {
+
+    //send_data(0, high_side_command);
     high_side_command << 1;
-    send_data(0, high_side_command);
     delay(100);
     for (int j; j <= 16; j++)
     {
       //cmd_set = ;
-      send_data(1, build_command_set(j, 1, 255));
+      //send_data(1, build_command_set(j, 1, 255));
     }
   }
 }
-
+/*
 unsigned int build_command_set(unsigned int lednum, unsigned int readwrite, unsigned int command_val) {
   //this function takes command registers and combines them with commands to form an instruction set
   // command set for PCA9745B
@@ -78,7 +82,7 @@ void send_data(unsigned int target, unsigned int cmd)
   else {
     digitalWrite(ss2, LOW);
   }
-  SPI.beginTransaction(SPISettings(5000000, MSBFIRST, SPI_MODE0));  //3 Mhz should be more than fast enough for this application.
+  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));  //3 Mhz should be more than fast enough for this application.
   SPI.transfer(cmd);
   if (target == 0) {
     digitalWrite(ss1, HIGH);
@@ -88,3 +92,4 @@ void send_data(unsigned int target, unsigned int cmd)
   }
   SPI.endTransaction();
 }
+*/
