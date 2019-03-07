@@ -3,10 +3,10 @@
 
 
 byte lighting_command;
-unsigned int pwm_register_set[] = {4096, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608, 4608} ; //I would like this to go into a library
+unsigned int pwm_register_set[] = {4096, 4608, 5120, 5632, 6144, 6656, 7168, 7680, 8192, 8704, 9216, 9728, 10240, 10752, 11264, 11776} ; //I would like this to go into a library
 unsigned int ss1 = 8;
 unsigned int ss2 = 9;
-unsigned int high_side_command = 1;
+unsigned int high_side_command = 1; //initial shift reg cmd
 unsigned int cmd_set;
 
 
@@ -51,9 +51,9 @@ void loop()
 unsigned int build_command_set(unsigned int lednum, unsigned int readwrite, unsigned int command_val) {
   //this function takes command registers and combines them with commands to form an instruction set
   // command set for PCA9745B
-  //readwrite = 1 = digitalWrite
+  //readwrite = 1 = write
 
-  unsigned int regset = 0; //register construct
+  unsigned int regset = 0; //register container, returned value
   unsigned int typebit;
   if (readwrite == 1)
   {
@@ -63,25 +63,20 @@ unsigned int build_command_set(unsigned int lednum, unsigned int readwrite, unsi
   {
     typebit = 0;
   }
-  regset = pwm_register_set[lednum];  //pulls the correct register from the LUT
-  //regset = regset << 1;  //shift over one to add in the read/write bit
+  regset = pwm_register_set[lednum];  //pulls the correct register from the LUT  //regset = regset << 1;  //shift over one to add in the read/write bit
   regset += typebit;
   regset += command_val;
-  regset = regset | typebit;  //add the read/write bit
-  regset = regset << 6;  //shift over to add value
-  regset = regset | command_val;  //add in value (0-255)
   return (regset);
 }
 
 void send_data(unsigned int target, unsigned int cmd)
 {
-  //This sends both high side and low side data
+  //This function can send both high side and low side data
   //target value of 0 sends to high side, 1 to low side.
   //operationally that means changing the lat lines used
-  //SerialUSB.println("Entered Send Data : "); //Send Serial Flag
-  //SerialUSB.print("Command: ");
-  // SerialUSB.print(cmd);
-  // SerialUSB.println();
+  SerialUSB.println("Entered Send Data : "); //Send Serial Flag
+  SerialUSB.print("Command: ");
+  SerialUSB.println(cmd);
   if (target == 0) {
     digitalWrite(ss1, LOW);
   }
