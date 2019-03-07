@@ -1,6 +1,6 @@
 //Starry_Night_Board_Checkout.cpp
 #include<SPI.h>
-
+#include "wiring_private.h" // pinPeripheral() function this is for the SeR
 
 byte lighting_command;
 unsigned int pwm_register_set[] = {4096, 4608, 5120, 5632, 6144, 6656, 7168, 7680, 8192, 8704, 9216, 9728, 10240, 10752, 11264, 11776} ; //I would like this to go into a library
@@ -11,14 +11,15 @@ unsigned int cmd_set;
 
 
 
+SPIClass SPI2 (&sercom2, 3, 5, 4, SPI_PAD_0_SCK_3, SERCOM_RX_PAD_1);
 
 
 void setup()
 {
   SerialUSB.begin(115200);
   SerialUSB.println("Ping");
-  SPI.begin();
-  // SPI.setClockDivider(SPI_CLOCK_DIV8);//divide the clock by 8
+  SPI2.begin();
+  // SPI2.setClockDivider(SPI2_CLOCK_DIV8);//divide the clock by 8
   pinMode(ss1, OUTPUT);
   pinMode(ss2, OUTPUT);
 
@@ -83,13 +84,13 @@ void send_data(unsigned int target, unsigned int cmd)
   else {
     digitalWrite(ss2, LOW);
   }
-  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));  //3 Mhz should be more than fast enough for this application.
-  SPI.transfer(cmd);
+  SPI2.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));  //3 Mhz should be more than fast enough for this application.
+  SPI2.transfer16(cmd);
   if (target == 0) {
     digitalWrite(ss1, HIGH);
   }
   else {
     digitalWrite(ss2, HIGH);
   }
-  SPI.endTransaction();
+  SPI2.endTransaction();
 }
