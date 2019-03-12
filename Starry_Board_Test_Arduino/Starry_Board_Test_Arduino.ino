@@ -8,7 +8,7 @@ unsigned int ss1 = 8;
 unsigned int ss2 = 9;
 unsigned int high_side_command = 1; //initial shift reg cmd
 unsigned int cmd_set;
-
+unsigned int flagpin = 10;
 
 
 SPIClass SPI2 (&sercom2, 3, 5, 4, SPI_PAD_0_SCK_3, SERCOM_RX_PAD_1);
@@ -19,10 +19,13 @@ void setup()
   SerialUSB.begin(115200);
   SerialUSB.println("Ping");
   SPI2.begin();
+  pinPeripheral(3, PIO_SERCOM_ALT);
+  pinPeripheral(4, PIO_SERCOM_ALT);
+  pinPeripheral(5, PIO_SERCOM);
   // SPI2.setClockDivider(SPI2_CLOCK_DIV8);//divide the clock by 8
   pinMode(ss1, OUTPUT);
   pinMode(ss2, OUTPUT);
-
+  pinMode(flagpin, OUTPUT);
 }
 
 void loop()
@@ -30,23 +33,27 @@ void loop()
   //command 16 LEDs on on each set.
   SerialUSB.println("Ping");
   high_side_command = 1;
-
+  digitalWrite(flagpin, HIGH);
   for (int i = 0; i < 16; i++)
   {
+
     SerialUSB.println("Pong");
     send_data(0, high_side_command);
     SerialUSB.print("High Command: ");
     SerialUSB.println(high_side_command);
+
     high_side_command = high_side_command << 1;
-    delay(100);
+    //delay(100);
     for (int j = 0; j <= 16; j++)
     {
       SerialUSB.print("Low Command: ");
       SerialUSB.println(build_command_set(j, 1, 255));
       //cmd_set = ;
+      //delay(100);
       send_data(1, build_command_set(j, 1, 255));
     }
   }
+  digitalWrite(flagpin, LOW);
 }
 
 unsigned int build_command_set(unsigned int lednum, unsigned int readwrite, unsigned int command_val) {
