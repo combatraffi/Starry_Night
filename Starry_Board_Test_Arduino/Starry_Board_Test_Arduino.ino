@@ -9,7 +9,7 @@ unsigned int ss2 = 9;
 unsigned int high_side_command = 1; //initial shift reg cmd
 unsigned int cmd_set;
 unsigned int flagpin = 10;
-
+unsigned int oe_pin = 6;
 
 SPIClass SPI2 (&sercom2, 3, 5, 4, SPI_PAD_0_SCK_3, SERCOM_RX_PAD_1);
 
@@ -25,7 +25,9 @@ void setup()
   // SPI2.setClockDivider(SPI2_CLOCK_DIV8);//divide the clock by 8
   pinMode(ss1, OUTPUT);
   pinMode(ss2, OUTPUT);
+  pinMode(oe_pin, OUTPUT);
   pinMode(flagpin, OUTPUT);
+  digitalWrite(oe_pin, HIGH);
 }
 
 void loop()
