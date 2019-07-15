@@ -29,18 +29,11 @@ unsigned int comspeed = 3000000;    //Sets the SPI communication speed DONT KNOW
 int output_enable = 6;  //output enable pin LOW ENABLE, triggers both chips
 
 
-
-
-
-
 void setup()
 {
-pinMode(output_enable, INPUT);
-
+pinMode(output_enable, OUTPUT);
+pinmode(3, OUTPUT); //what is this?
 SerialUSB.begin(115200);
-
-
-pinmode(3, OUTPUT);
 }
 
 
@@ -59,40 +52,37 @@ void loop()
 }
 
 
-void set_brightness()
+void set_brightness(int num_stars, int chance, int minbright, int maxbright)
 //This function sets the brightness to a value other than maximum
-//approximately 40% of the time.  Dimming value is randomized.
+//likelyhood of dimming set by the chance arg.
 {
     int dimchoose=0;
-    for (int i, i<101, i++)
+    for (int i, i < num_stars, i++)
     {
-
-        dimchoose= random(0,10);
-        if (dimchoose >= 4)
+        dimchoose = random(1,10);
+        if (dimchoose <= chance)
         {
             star[i].dimming_active = 1;
-            star[i].brightval = random(200, 255);
+            star[i].brightval = random(minbright, maxbright);
         }
         else
         {
             star[i].dimming_active = 0;
-            star[i].brightval = 255;
+            star[i].brightval = maxbright;
         }
     }
 }
 
-void set_eventtime():
+void set_eventtime(int numStars, int maxInterval):
 //This function sets the ammount of time to remain dimmed.
 //It is randomized between 0 and 1/4 seconds.
 {
 int e_delay = 0
-    for (int i, i<101, i++)
+    for (int i, i < numStars, i++)
     {
-        e_delay = random(0, 250);
-        star[i].event_time = millis()+e_delay;
+        star[i].event_time = millis() + random(0, maxInterval);
     }
 }
-
 
 
 void construct_dim_command(){
