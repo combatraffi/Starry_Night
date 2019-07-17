@@ -1,3 +1,5 @@
+#include <SPI.h>
+#include "wiring_private.h" // pinPeripheral() function this is for the SeR
 
 //THINGS TO DO IN THIS SCRIPT
     //Create Event Controller
@@ -39,11 +41,9 @@ SerialUSB.begin(115200);
 
 void loop()
 {
-    current_time = millis();
-
     for (int j, j<=101; j++)
     {
-        if (star[j].event_time <= current_time)
+        if (star[j].event_time <= millis())
         {
             set_brightness();
             set_eventtime();
@@ -73,11 +73,11 @@ void set_brightness(int num_stars, int chance, int minbright, int maxbright)
     }
 }
 
+
 void set_eventtime(int numStars, int maxInterval):
 //This function sets the ammount of time to remain dimmed.
 //It is randomized between 0 and 1/4 seconds.
 {
-int e_delay = 0
     for (int i, i < numStars, i++)
     {
         star[i].event_time = millis() + random(0, maxInterval);
@@ -85,19 +85,14 @@ int e_delay = 0
 }
 
 
-void construct_dim_command(){
-    //This function updates the array which holds 16 dimming commands
-    for(int i=0;i<8;i++){
-
+void construct_dim_command()
+//This function updates the array which holds 16 dimming commands
+{
+    for(int i=0;i<8;i++)
+    {
         dimming_set[i]=build_dimset[i];
-
+    }
 }
-
-
-
-
-}
-
 unsigned int build_command_set(unsigned int lednum, unsigned int readwrite, unsigned int command_val) {
   //this function takes command registers and combines them with commands to form an instruction set
   // command set for PCA9745B
